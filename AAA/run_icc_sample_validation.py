@@ -7,6 +7,13 @@ from icc_validation.cmm import CmmError
 from icc_validation.runner import run_sample_validation
 
 
+def default_transicc_path() -> str:
+    local = Path("tools-src/Little-CMS/bin/transicc.exe")
+    if local.exists():
+        return str(local)
+    return "transicc"
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Run a sample 7CLR ICC -> Lab -> model validation chain.",
@@ -20,6 +27,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--active-learning", default="2390-1.xlsx")
     parser.add_argument("--output", default="outputs/icc_sample_validation.csv")
     parser.add_argument("--sample-size", type=int, default=50)
+    parser.add_argument("--cmm", choices=["lcms", "xicclu"], default="lcms")
+    parser.add_argument("--transicc", default=default_transicc_path())
     parser.add_argument("--xicclu", default="xicclu")
     return parser
 
@@ -33,6 +42,8 @@ def main() -> int:
             model_path=Path(args.model),
             output_path=Path(args.output),
             sample_size=args.sample_size,
+            cmm_backend=args.cmm,
+            transicc_path=args.transicc,
             xicclu_path=args.xicclu,
             std_path=Path(args.std),
             ink_path=Path(args.ink),

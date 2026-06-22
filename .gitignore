@@ -6,4 +6,5 @@ pytest-of-*/
 outputs/
 AAA/outputs/
 AAA/tools/
+AAA/tools-src/
 AAA/xgamut_model_current.pkl

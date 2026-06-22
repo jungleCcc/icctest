@@ -38,6 +38,8 @@ def run_sample_validation(
     model_path: str | Path,
     output_path: str | Path,
     sample_size: int = 50,
+    cmm_backend: str = "lcms",
+    transicc_path: str | Path = "transicc",
     xicclu_path: str = "xicclu",
     std_path: str | Path = "Pantone_Coated_CS1_Extract-2.xlsx",
     ink_path: str | Path = "New_V3_7色-2-real_Cleaned_Sorted.xlsx",
@@ -49,7 +51,13 @@ def run_sample_validation(
 
     rows = parse_7clr_txt(txt_path)
     sample = rows[:sample_size]
-    converted = convert_7clr_to_lab(sample, icc_path, xicclu_path=xicclu_path)
+    converted = convert_7clr_to_lab(
+        sample,
+        icc_path,
+        cmm_backend=cmm_backend,
+        transicc_path=transicc_path,
+        xicclu_path=xicclu_path,
+    )
     model_package = load_or_train_xgamut_model(
         model_path=model_path,
         std_path=std_path,

@@ -26,18 +26,24 @@ The original `xgamut_model.pkl` is not overwritten.
 
 ## External CMM Dependency
 
-The ICC profile device space is `7CLR`, so the validation script uses ArgyllCMS `xicclu` for ICC conversion. RGB-only or CMYK-only Python ICC APIs are not enough for this profile.
+The ICC profile device space is `7CLR`, so the validation script uses LittleCMS `transicc` for ICC conversion. RGB-only or CMYK-only Python ICC APIs are not enough for this profile.
 
-Check that `xicclu` is available:
+The repository does not commit third-party binaries. In this workspace, LittleCMS was built locally at:
 
-```powershell
-where.exe xicclu
+```text
+tools-src/Little-CMS/bin/transicc.exe
 ```
 
-If `xicclu` is not on PATH, pass its full path:
+The CLI uses that local path automatically when it exists. If you build or install LittleCMS somewhere else, pass the path explicitly:
 
 ```powershell
-python run_icc_sample_validation.py --xicclu "C:\Path\To\xicclu.exe"
+python run_icc_sample_validation.py --transicc "C:\Path\To\transicc.exe"
+```
+
+The old ArgyllCMS `xicclu` backend is still available for ICC v2 profiles, but this CGS/XGamut ICC is v4.3 and did not work with Argyll:
+
+```powershell
+python run_icc_sample_validation.py --cmm xicclu --xicclu "C:\Path\To\xicclu.exe"
 ```
 
 ## Run a 50-Row Sample
@@ -53,10 +59,10 @@ Wrote validation CSV: outputs\icc_sample_validation.csv
 Prediction columns are observational only; they are not a pass/fail accuracy metric.
 ```
 
-If `xicclu` is missing, expected output is:
+If `transicc` is missing, expected output is:
 
 ```text
-ICC conversion failed: xicclu executable not found. Install ArgyllCMS and ensure xicclu is on PATH, or pass --xicclu with the executable path.
+ICC conversion failed: transicc executable not found. Build LittleCMS transicc, ensure it is on PATH, or pass --transicc with the executable path.
 ```
 
 ## Run the Full 3024-Row Chart
