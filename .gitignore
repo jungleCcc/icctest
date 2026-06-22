@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.idea/
+pytest-of-*/
+outputs/
+AAA/outputs/
+AAA/xgamut_model_current.pkl
