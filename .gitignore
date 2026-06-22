@@ -5,4 +5,5 @@ __pycache__/
 pytest-of-*/
 outputs/
 AAA/outputs/
+AAA/tools/
 AAA/xgamut_model_current.pkl
